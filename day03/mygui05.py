@@ -4,7 +4,7 @@ from PyQt5 import uic
 from PyQt5.Qt import QMainWindow, QApplication, QMessageBox
 
 
-form_class = uic.loadUiType("hello.ui")[0]
+form_class = uic.loadUiType("mygui05.ui")[0]
 
 class WindowClass(QMainWindow, form_class):
     def __init__(self):
@@ -15,9 +15,18 @@ class WindowClass(QMainWindow, form_class):
         self.pb.clicked.connect(self.pbClicked)
     
     def pbClicked(self):
-        self.lbl.setText("Good Evening")
-    
+        num1 = int(self.leA.text())
+        num2 = int(self.leB.text())
+        num3 = int(self.leC.text())
+        result = 0
         
+        for i in range(num1,num2+1):
+            if i%num3 == 0 :
+                result += i
+        
+        self.leD.setText(str(result))
+    
+    
 if __name__ == "__main__" : 
     app = QApplication(sys.argv)
     myWindow = WindowClass()
