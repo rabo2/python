@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<style type="text/css">
+table, td {
+border : 1px solid
+}
+</style>
+<script src="js/jquery-3.6.0.js"></script>
+<script type="text/javascript">
+function setData(e_id, name, tel){
+	document.getElementById("e_id").value = e_id;
+	document.getElementById("name").value = name;
+	document.getElementById("tel").value = tel;
+}
+
+function fn_add(){
+	var e_id = $('#e_id').val();
+	var name = $('#name').val();
+	var tel = $('#tel').val();
+	
+	var postdata = {
+            'e_id':e_id, 'name':name, 'tel':tel
+        }
+	
+    $.ajax({
+         type: 'POST',
+         url: '/insert',
+         data: JSON.stringify(postdata),
+         dataType : 'JSON',
+         contentType: "application/json",
+         success: function(data){
+			if (data.result=="ok"){
+				location.reload(true);
+			}else{
+				alert('추가 중 오류 발생');
+			}
+         },
+         error : function(xhr){
+        	 alert(xhr);
+         }
+     });
+}
+
+function fn_mod(){
+	var e_id = $('#e_id').val();
+	var name = $('#name').val();
+	var tel = $('#tel').val();
+	
+	var postdata = {
+            'e_id':e_id, 'name':name, 'tel':tel
+        }
+	
+    $.ajax({
+         type: 'POST',
+         url: '/update',
+         data: JSON.stringify(postdata),
+         dataType : 'JSON',
+         contentType: "application/json",
+         success: function(data){
+			if (data.result=="ok"){
+				location.reload(true);
+			}else{
+				alert('수정 중 오류 발생');
+			}
+         },
+         error : function(xhr){
+        	 alert(xhr);
+         }
+     });
+}
+
+
+function fn_del(){
+	var flag = confirm('삭제한 데이터는 복구할 수 없습니다.\n 정말 삭제하시겠습니까?')
+	
+	if(!flag){
+		return;
+	}
+	
+	var e_id = $('#e_id').val();
+	var postdata = {
+			'e_id' : e_id
+	};
+    $.ajax({
+         type: 'POST',
+         url: '/delete',
+         data: JSON.stringify(postdata),
+         dataType : 'JSON',
+         contentType: "application/json",
+         success: function(data){
+			if (data.result=="ok"){
+				location.reload(true);
+			}else{
+				alert('삭제 중 오류 발생');
+			}
+         },
+         error : function(xhr){
+        	 alert(xhr);
+         }
+     });
+}
+
+</script>
+</head>
+<body>
+<div>
+<table>
+   <tr> 
+      <td>학번</td> 
+      <td>이름</td>
+      <td>반</td>
+      <td>번호</td>
+   </tr>
+{% for i in emps %}
+   <tr> 
+      <td><a href="javascript:setData('{{i.s_id}}', '{{i.s_name}}', '{{i.s_ban}}', '{{'i.s_bunho}}')">{{i.s_id}}</a></td> 
+      <td>{{i.s_name}}</td>
+      <td>{{i.s_ban}}</td>
+      <td>{{i.s_bunho}}</td>
+   </tr>
+{% endfor %}
+</table>
+</div>
+
+<div>
+<table>
+   <tr>
+      <td>학번<td>
+      <td>
+         <input type="text" id="s_id">
+      </td>
+   </tr>
+   <tr>
+      <td>이름</td>
+      <td>
+         <input type="text" id="s_name">
+      </td>
+   </tr>
+   <tr>
+      <td>반</td>
+      <td>
+         <input type="text" id="s_ban">
+      </td>
+   </tr>
+   <tr>
+      <td>번호</td>
+      <td>
+         <input type="text" id="s_bunho">
+      </td>
+   </tr>
+   <tr>
+      <td>
+         <input type="button" value="추가" onclick="fn_add()">
+         <input type="button" value="수정" onclick="fn_mod()">
+         <input type="button" value="삭제" onclick="fn_del()">
+      </td>
+   </tr>
+</table>
+</div>
+</body>
+</body>
+</html>
