@@ -11,7 +11,14 @@ arr = []
 if response.status_code == 200:
     html = response.text
     soup = BeautifulSoup(html, 'html.parser')
-    print(soup)
+    tables = soup.select("table")
+    
+    trs = tables[0].select("tr")
+    
+    for idx,tr in enumerate(trs) : 
+        if idx > 0 :
+            tds = tr.select("td")
+            print(tds[1].text, tds[2].text)
     
 else : 
     print(response.status_code)
