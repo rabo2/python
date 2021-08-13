@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+window.addEventListener("keydown", (e) => {
+	move(e);
+});
+
+function move(e){
+	var box = document.getElementById("box")
+	var top = box.style.top
+	var left = box.style.left
+	var move;
+
+	topArr = top.split('p');
+	leftArr = left.split('p');
+	
+	top = topArr[0];
+	left = leftArr[0];
+	
+	if(e.key == 'ArrowUp'){
+		move = parseInt(top) - 10
+		box.style.top = move+"px";
+	}else if(e.key == 'ArrowLeft'){
+		move = parseInt(left) - 10
+		box.style.left = move+"px";
+	}else if(e.key == 'ArrowDown'){
+		move = parseInt(top) + 10
+		box.style.top = move+"px";
+	}else if(e.key == 'ArrowRight'){
+		move = parseInt(left) + 10
+		box.style.left = move+"px";
+	}
+}
+</script>
+</head>
+<body>
+<div id = "box" style="position: absolute; left: 10px; top: 10px; width: 100px; height:100px; background: red ">
+움
+</div>
+</body>
+</html>
