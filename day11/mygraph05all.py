@@ -29,17 +29,8 @@ def getPrices(s_name):
     curs.execute(sql)
     
     rows = curs.fetchall()
-    first = 100
-    for idx,row in enumerate(rows):
-        print(s_name,idx,row)
-        if idx == 0:
-            first = row[0]
-        
-        if row[0] == 0:
-            ret.append(99)
-        else:
-            ret.append((row[0]/first)*100)
-
+    for row in rows:
+        ret.append(row[0])
     conn.close()
     return ret
 

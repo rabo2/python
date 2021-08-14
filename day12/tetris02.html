@@ -3,132 +3,29 @@
 <head>
 <meta charset="EUC-KR">
 <title>Insert title here</title>
-<script>
-var block2D = [
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
+<script type="text/javascript">
 
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
+class User {
 
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0],
-	[0,0,0,0,0, 0,0,0,0,0]
-]
-
-
-class Block {
-  constructor(type, status,i,j) {
-	this.type = type;
-	this.status = status;
-	this.i = i;
-	this.j = j;
-	
-  }
-}
-
-var b = new Block(2,5,2,2);
-
-function setBlock2DFromClass(){
-	
-	if(b.type == 1){
-		block2D[b.i		][b.j	] = b.type;
-		block2D[b.i		][b.j+1	] = b.type;
-		block2D[b.i+1	][b.j	] = b.type;
-		block2D[b.i+1	][b.j+1	] = b.type;
+	constructor(name) {
+		this.name = name;
 	}
-		
-	if(b.type == 2){
-	  
-		block2D[b.i][b.j]= b.type;
-		block2D[b.i][b.j+1]= b.type;
-		block2D[b.i+1][b.j-1]= b.type;
-		block2D[b.i+1][b.j]= b.type;
+
+	sayHi() {
+		alert(this.name);
 	}
-	
-	if(b.type == 3){
-		block2D[b.i+1][b.j+1]= b.type;
-		block2D[b.i][b.j+1]= b.type;
-		block2D[b.i][b.j]= b.type;
-		block2D[b.i+1][b.j]= b.type;
-	}
-	
-	if(b.tpye == 4){
-		block2D[b.i][b.j-1]= b.type;
-		block2D[b.i][b.j]= b.type;
-		block2D[b.i][b.j+1]= b.type;
-		block2D[b.i][b.j+2]= b.type;
-	}
-	
-	if(b.type == 5){
-		block2D[b.i-1][b.j+1]= b.type;
-		block2D[b.i-1][b.j]= b.type;
-		block2D[b.i][b.j]= b.type;
-		block2D[b.i+1][b.j]= b.type;
-	}
-	
-	if(b.type == 6){
-		block2D[b.i-1][b.j-1]= b.type;
-		block2D[b.i-1][b.j]= b.type;
-		block2D[b.i][b.j]= b.type;
-		block2D[b.i+1][b.j]= b.type;
-	}
-	
-   if(b.type == 7){
-	      if(b.status ==1){
-	         block2D[b.i-1   ][b.j   ]=b.type;
-	         block2D[b.i      ][b.j   ]=b.type;
-	         block2D[b.i      ][b.j+1   ]=b.type;
-	         block2D[b.i+1   ][b.j+1   ]=b.type;
-	      }
-	      if(b.status == 2){
-	         block2D[b.i-1   ][b.j   ]=b.type;
-	         block2D[b.i      ][b.j   ]=b.type;
-	         block2D[b.i      ][b.j+1   ]=b.type;
-	         block2D[b.i+1   ][b.j   ]=b.type;
-	      }
-	      if(b.status == 3){
-	         block2D[b.i      ][b.j-1   ]=b.type;
-	         block2D[b.i      ][b.j   ]=b.type;
-	         block2D[b.i      ][b.j+1   ]=b.type;
-	         block2D[b.i+1   ][b.j   ]=b.type;
-	      }
-	      if(b.status == 4){
-	         block2D[b.i-1   ][b.j   ]=b.type;
-	         block2D[b.i      ][b.j-1   ]=b.type;
-	         block2D[b.i      ][b.j   ]=b.type;
-	         block2D[b.i+1   ][b.j   ]=b.type;
-	      }
-	   }
+
 }
 
 function init(){
-	setBlock2DFromClass();
-	console.log(block2D)
+	alert("hello");
 }
+
+
 </script>
 </head>
 <body>
-	<a href="javascript:init()">init</a>
+<a href="javascript:init()" >init</a>
+
 </body>
 </html>
