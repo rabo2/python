@@ -3,29 +3,298 @@
 <head>
 <meta charset="EUC-KR">
 <title>Insert title here</title>
-<script type="text/javascript">
+<script>
 
-class User {
+var block2D = [
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,6,6,6,6, 0,0,0,0,0],
+   [0,6,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0]
+];
 
-	constructor(name) {
-		this.name = name;
+var stack2D = [
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [3,3,3,3,3, 3,3,3,0,0]
+];
+	
+var screen2D = [
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0]
+];
+
+
+class Block {
+   constructor(type,status,i,j){
+      this.type = type;
+      this.status = status;
+      this.i = i;
+      this.j = j;
+   }
+}
+
+var b = new Block(6,4,2,2);
+
+
+function setBlock2DFromClass(){
+   if(b.type == 1){
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i+1][b.j+1]=b.type;
+   }
+   
+   if(b.type == 2){
+      if(b.status == 1){
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i+1][b.j+1]=b.type;
+      }
+      if(b.status == 2){
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i+1][b.j-1]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      }
+   }
+   
+   if(b.type == 3){
+      if(b.status == 1){
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i-1][b.j+1]=b.type;
+      }
+      if(b.status == 2){
+      block2D[b.i][b.j-1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i+1][b.j+1]=b.type;
+      }
+   }
+   
+   if(b.type == 4){
+      if(b.status == 1){
+      block2D[b.i][b.j-1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i][b.j+2]=b.type;
+      }
+      if(b.status == 2){
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i+2][b.j]=b.type;
+      }
+   }
+      
+   
+   if(b.type == 5){
+      if(b.status == 1){
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i-1][b.j+1]=b.type;
+      }
+      if(b.status == 2){
+      block2D[b.i][b.j-1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i+1][b.j+1]=b.type;
+      }
+      if(b.status == 3){
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i+1][b.j-1]=b.type;
+      }
+      if(b.status == 4){
+      block2D[b.i-1][b.j-1]=b.type;
+      block2D[b.i][b.j-1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      }
+   }
+   
+   
+   if(b.type == 6){
+      if(b.status == 1){
+      block2D[b.i-1][b.j-1]=b.type;
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      }
+      if(b.status == 2){
+      block2D[b.i-1][b.j+1]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j-1]=b.type;
+      }
+      if(b.status == 3){
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i+1][b.j+1]=b.type;
+      }
+      if(b.status == 4){
+      block2D[b.i][b.j-1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i+1][b.j-1]=b.type;
+      }
+   }
+   
+   
+   if(b.type == 7){
+      if(b.status == 1){
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j-1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      }
+      if(b.status == 2){
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      }
+      if(b.status == 3){
+      block2D[b.i][b.j-1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      }
+      if(b.status == 4){
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i][b.j-1]=b.type;
+      }
+   }
+}
+
+function moveBlock2DToScreen2D(){
+	for(var i = 0; i < block2D.length; i++){
+		for(var j = 0; j < block2D[i].length; j++){
+			if(block2D[i][j] > 0){
+				screen2D[i][j] = block2D[i][j];
+			}
+		}
 	}
+}
 
-	sayHi() {
-		alert(this.name);
+function moveStack2DToScreen2D(){
+	for(var i = 0; i < stack2D.length; i++){
+		for(var j = 0; j < stack2D[i].length; j++){
+			if(stack2D[i][j] > 0){
+				screen2D[i][j] = stack2D[i][j];
+			}
+		}
 	}
-
+	
 }
 
 function init(){
-	alert("hello");
+   setBlock2DFromClass();
+   moveBlock2DToScreen2D();
+   moveStack2DToScreen2D();
+   console.log(screen2D);
 }
 
+window.addEventListener("keydown", (e) => {
+	move(e);
+});
+
+function move(e){
+	if(e.key.indexOf('Arrow') == 0){
+		init();
+	}
+}
 
 </script>
 </head>
 <body>
-<a href="javascript:init()" >init</a>
-
+ <table>
+ 
+ </table>
 </body>
 </html>

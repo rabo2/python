@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+
+var block2D = [
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,2,2,0, 0,0,0,0,0],
+   [0,2,2,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   [0,0,0,0,0, 0,0,0,0,0],
+   
+   
+]
+
+var stack2D = [
+      
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [3,3,3,3,3, 3,3,3,0,0],
+      
+      
+   ]
+   
+var screen2D = [
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      [0,0,0,0,0, 0,0,0,0,0],
+      
+      
+   ]
+
+class Block {
+   constructor(type,status,i,j){
+      this.type = type;
+      this.status = status;
+      this.i = i;
+      this.j = j;
+   }
+}
+
+var b = new Block(6,1,2,2);
+
+
+function setBlock2DFromClass(){
+   for(var i = 0; i < block2D.length; i++){
+      for(var j = 0; j < block2D[i].length; j++){
+         if(block2D[i][j] > 0){
+            block2D[i][j] = 0
+         }
+      }
+   }
+   
+   if(b.type == 1){
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i+1][b.j+1]=b.type;
+   }
+   
+   if(b.type == 2){
+      if(b.status == 1){
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i+1][b.j+1]=b.type;
+      }
+      if(b.status == 2){
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i+1][b.j-1]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      }
+   }
+   
+   if(b.type == 3){
+      if(b.status == 1){
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i-1][b.j+1]=b.type;
+      }
+      if(b.status == 2){
+      block2D[b.i][b.j-1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i+1][b.j+1]=b.type;
+      }
+   }
+   
+   if(b.type == 4){
+      if(b.status == 1){
+      block2D[b.i][b.j-1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i][b.j+2]=b.type;
+      }
+      if(b.status == 2){
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i+2][b.j]=b.type;
+      }
+   }
+      
+   
+   if(b.type == 5){
+      if(b.status == 1){
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i-1][b.j+1]=b.type;
+      }
+      if(b.status == 2){
+      block2D[b.i][b.j-1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i+1][b.j+1]=b.type;
+      }
+      if(b.status == 3){
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i+1][b.j-1]=b.type;
+      }
+      if(b.status == 4){
+      block2D[b.i-1][b.j-1]=b.type;
+      block2D[b.i][b.j-1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      }
+   }
+   
+   
+   if(b.type == 6){
+      if(b.status == 1){
+      block2D[b.i-1][b.j-1]=b.type;
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      }
+      if(b.status == 2){
+      block2D[b.i-1][b.j+1]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j-1]=b.type;
+      }
+      if(b.status == 3){
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i+1][b.j+1]=b.type;
+      }
+      if(b.status == 4){
+      block2D[b.i][b.j-1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i+1][b.j-1]=b.type;
+      }
+   }
+   
+   
+   if(b.type == 7){
+      if(b.status == 1){
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j-1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      }
+      if(b.status == 2){
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      }
+      if(b.status == 3){
+      block2D[b.i][b.j-1]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i][b.j+1]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      }
+      if(b.status == 4){
+      block2D[b.i-1][b.j]=b.type;
+      block2D[b.i][b.j]=b.type;
+      block2D[b.i+1][b.j]=b.type;
+      block2D[b.i][b.j-1]=b.type;
+      }
+   }
+   
+}
+
+function moveBlock2DToScreen2D(){
+   for(var i = 0; i < block2D.length; i++){
+      for(var j = 0; j < block2D[i].length; j++){
+         if(block2D[i][j] > 0){
+            screen2D[i][j] = block2D[i][j]
+         }
+      }
+   }
+}
+
+function moveStack2DToScreen2D(){
+   for(var i = 0; i < stack2D.length; i++){
+      for(var j = 0; j < stack2D[i].length; j++){
+         if(stack2D[i][j] > 0){
+            screen2D[i][j] = stack2D[i][j]
+         }
+      }
+   }
+}
+
+function myrender(){
+   var tds = document.getElementsByTagName("td");
+   tds[11].bgColor = "#ff0000"
+   for(var i = 0; i < screen2D.length; i++){
+      for(var j = 0; j < screen2D[i].length; j++){
+         if(screen2D[i][j] == 0){
+            tds[i * 10 + j].bgColor = "#ffffff";
+         } else if(screen2D[i][j] == 1){
+            tds[i * 10 + j].bgColor = "#FF0000";
+         } else if(screen2D[i][j] == 2){
+            tds[i * 10 + j].bgColor = "#ffbb00";
+         } else if(screen2D[i][j] == 3){
+            tds[i * 10 + j].bgColor = "#FFE400";
+         } else if(screen2D[i][j] == 4){
+            tds[i * 10 + j].bgColor = "#1DDB16";
+         } else if(screen2D[i][j] == 5){
+            tds[i * 10 + j].bgColor = "#00D8FF";
+         } else if(screen2D[i][j] == 6){
+            tds[i * 10 + j].bgColor = "#0100FF";
+         } else if(screen2D[i][j] == 7){
+            tds[i * 10 + j].bgColor = "#5F00FF";
+         } else if(screen2D[i][j] == 11){
+            tds[i * 10 + j].bgColor = "#2F9D27";
+         } else if(screen2D[i][j] == 12){
+            tds[i * 10 + j].bgColor = "#2F9D27";
+         } else if(screen2D[i][j] == 13){
+            tds[i * 10 + j].bgColor = "#2F9D27";
+         } else if(screen2D[i][j] == 14){
+            tds[i * 10 + j].bgColor = "#2F9D27";
+         } else if(screen2D[i][j] == 15){
+            tds[i * 10 + j].bgColor = "#2F9D27";
+         } else if(screen2D[i][j] == 16){
+            tds[i * 10 + j].bgColor = "#2F9D27";
+         } else if(screen2D[i][j] == 17){
+            tds[i * 10 + j].bgColor = "#2F9D27";
+         }
+         
+      }
+   }
+   
+   
+}
+function makeScreen2DZero(){
+   for(var i = 0; i < screen2D.length; i++){
+      for(var j = 0; j < screen2D[i].length; j++){
+         if(screen2D[i][j] > 0){
+            screen2D[i][j] = 0
+         }
+      }
+   }
+   
+}
+function changeStatus(){
+   if(b.type > 1 && b.type < 5){
+      if(b.status == 1){
+         b.status += 1;
+      } else if(b.status == 2){
+         b.status = 1;
+      }
+   }
+   if(b.type > 4){
+      if(b.status > 0){
+         b.status++;
+      } 
+      if(b.status > 4){
+         b.status = 1;
+      }
+   }
+   
+}
+function isCollision(){
+   
+   var cnt = 0;
+   
+   for(var i = 0; i < 25; i++){
+      for(var j = 0; j < 10; j++){
+         if(block2D[i][j] > 0){
+			cnt++;
+         }
+      }
+   }
+   
+   if(cnt < 4){
+	   return true;
+   }
+   
+   for(var i = 0; i < block2D.length; i++){
+      for(var j = 0; j < block2D[i].length; j++){
+         if(block2D[i][j] && stack2D[i][j] > 0){
+            return true;
+         }
+      }
+   }
+   return false;
+}
+
+function mydown(key){
+   var back_type = b.type;
+   var back_status = b.status;
+   var back_i = b.i;
+   var back_j = b.j;
+   if(key == 'ArrowDown'){
+      b.i++
+   } else if(key == 'ArrowRight'){
+      b.j++
+   } else if(key == 'ArrowLeft'){
+      b.j--
+   } else if(key == 'ArrowUp'){
+      changeStatus();
+   }
+   setBlock2DFromClass();
+   
+   var flag_collision = isCollision();
+   console.log("flag_collision : " + flag_collision)
+   makeScreen2DZero();
+   moveBlock2DToScreen2D();
+   moveStack2DToScreen2D();
+   myrender();
+}
+
+
+window.addEventListener("keydown", (e) => {
+   mydown(e.key);
+});
+
+</script>
+<style>
+table{
+   width :300px;
+   height : 750px;
+   border-collapse: collapse;
+   
+}
+td{
+   width: 20px;
+   height: 20px;
+}
+</style>
+</head>
+<body>
+
+
+   <table border="1px">
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+      <tr>
+         <td></td><td></td><td></td><td></td><td></td>
+         <td></td><td></td><td></td><td></td><td></td>
+      </tr>
+   </table>
+
+
+
+</body>
+</html>
