@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+window.onload = function(){
+	draw();
+}	
+
+
+function draw() {
+    var data = "";
+    
+    data += "0,0,0,0,0,0,0,0,0,0,";
+    data += "0,0,1,1,0,0,0,0,0,0,";
+    data += "0,0,1,1,0,0,0,0,0,0";
+	
+	var canvas = document.getElementById("canvas");
+    if (canvas.getContext) {
+	    var ctx = canvas.getContext("2d");
+	
+	    var dataArr = data.split(",");
+		var arr2D = [];
+		
+	    for(var i = 0; i < dataArr.length; i+=10){
+			var sliceArr = dataArr.slice(i,i+10);
+	    	arr2D.push(sliceArr);
+	    }
+	    
+	    console.log(arr2D);
+		
+// 		for(var i = 0; arr2D.length; i++){
+// 			console.log(arr2D[i]);
+// 			for(var j = 0; arr2D[i].length; j++){
+// 				if(arr2D[i][j] == 0){
+// 				    ctx.fillStyle = "rgb(255, 255, 255)";
+// 				    ctx.fillRect(i*20, j*20, 20, 20);
+
+// 				}else{
+// 				   ctx.fillStyle = "rgb(0, 0, 0)";
+// 				   ctx.fillRect(i*20, j*20, 20, 20);
+// 				}
+// 			}
+// 		}
+    }
+}
+</script>
+</head>
+<body>
+	<canvas id="canvas" width="200" height="150">
+	
+	</canvas>
+</body>
+</html>

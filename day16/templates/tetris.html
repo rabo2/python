@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Flask_Chatting_Application</title>
+<script src="js/jquery-3.5.1.js"></script>
+<script src="js/socket.io.js"></script>
+<script type="text/javascript">
+var socket = null;
+$(document).ready(function() {
+	socket = io.connect('http://192.168.45.45:9999');
+	socket.on('connect', function() {
+		$("#div_con").html("on");
+	})
+	socket.on('to_client', function(json) {
+		var command = json.command;
+		
+		if(command){
+			startIng = true;
+		}
+	})
+});
+
+
+var startIng = false;
+
+var block2D = [
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,2,2,0, 0,0,0,0,0],
+	[0,2,2,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0]
+	
+
+]
+
+var stack2D = [
+	
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0]
+ ]
+ 
+var screen2D = [
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0],
+	[0,0,0,0,0, 0,0,0,0,0]
+ ]
+
+class Block {
+	constructor(type,status,i,j){
+		this.type = type;
+		this.status = status;
+		this.i = i;
+		this.j = j;
+	}
+}
+
+var b = new Block(1,1,2,4);
+
+
+function setBlock2DFromClass(){
+	for(var i = 0; i < block2D.length; i++){
+		for(var j = 0; j < block2D[i].length; j++){
+		   if(block2D[i][j] > 0){
+			  block2D[i][j] = 0
+		   }
+		}
+	}
+	
+	if(b.type == 1){
+		block2D[b.i][b.j]=b.type;
+		block2D[b.i][b.j+1]=b.type;
+		block2D[b.i+1][b.j]=b.type;
+		block2D[b.i+1][b.j+1]=b.type;
+	}
+	
+	if(b.type == 2){
+		if(b.status == 1){
+			block2D[b.i-1][b.j]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i][b.j+1]=b.type;
+			block2D[b.i+1][b.j+1]=b.type;
+		}
+		if(b.status == 2){
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i][b.j+1]=b.type;
+			block2D[b.i+1][b.j-1]=b.type;
+			block2D[b.i+1][b.j]=b.type;
+		}
+	}
+	
+	if(b.type == 3){
+		if(b.status == 1){
+			block2D[b.i+1][b.j]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i][b.j+1]=b.type;
+			block2D[b.i-1][b.j+1]=b.type;
+		}
+		if(b.status == 2){
+			block2D[b.i][b.j-1]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i+1][b.j]=b.type;
+			block2D[b.i+1][b.j+1]=b.type;
+		}
+	}
+	
+	if(b.type == 4){
+		if(b.status == 1){
+			block2D[b.i][b.j-1]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i][b.j+1]=b.type;
+			block2D[b.i][b.j+2]=b.type;
+		}
+		if(b.status == 2){
+			block2D[b.i-1][b.j]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i+1][b.j]=b.type;
+			block2D[b.i+2][b.j]=b.type;
+		}
+	}
+	
+	
+	if(b.type == 5){
+		if(b.status == 1){
+			block2D[b.i+1][b.j]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i-1][b.j]=b.type;
+			block2D[b.i-1][b.j+1]=b.type;
+		}
+		if(b.status == 2){
+			block2D[b.i][b.j-1]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i][b.j+1]=b.type;
+			block2D[b.i+1][b.j+1]=b.type;
+		}
+		if(b.status == 3){
+			block2D[b.i-1][b.j]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i+1][b.j]=b.type;
+			block2D[b.i+1][b.j-1]=b.type;
+		}
+		if(b.status == 4){
+			block2D[b.i-1][b.j-1]=b.type;
+			block2D[b.i][b.j-1]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i][b.j+1]=b.type;
+		}
+	}
+	
+	
+	if(b.type == 6){
+		if(b.status == 1){
+			block2D[b.i-1][b.j-1]=b.type;
+			block2D[b.i-1][b.j]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i+1][b.j]=b.type;
+		}
+		if(b.status == 2){
+			block2D[b.i-1][b.j+1]=b.type;
+			block2D[b.i][b.j+1]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i][b.j-1]=b.type;
+		}
+		if(b.status == 3){
+			block2D[b.i-1][b.j]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i+1][b.j]=b.type;
+			block2D[b.i+1][b.j+1]=b.type;
+		}
+		if(b.status == 4){
+			block2D[b.i][b.j-1]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i][b.j+1]=b.type;
+			block2D[b.i+1][b.j-1]=b.type;
+		}
+	}
+	
+
+	if(b.type == 7){
+		if(b.status == 1){
+			block2D[b.i-1][b.j]=b.type;
+			block2D[b.i][b.j-1]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i][b.j+1]=b.type;
+		}
+		if(b.status == 2){
+			block2D[b.i-1][b.j]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i][b.j+1]=b.type;
+			block2D[b.i+1][b.j]=b.type;
+		}
+		if(b.status == 3){
+			block2D[b.i][b.j-1]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i][b.j+1]=b.type;
+			block2D[b.i+1][b.j]=b.type;
+		}
+		if(b.status == 4){
+			block2D[b.i-1][b.j]=b.type;
+			block2D[b.i][b.j]=b.type;
+			block2D[b.i+1][b.j]=b.type;
+			block2D[b.i][b.j-1]=b.type;
+		}
+	}
+}
+
+function moveBlock2DToScreen2D(){
+	for(var i = 0; i < block2D.length; i++){
+		for(var j = 0; j < block2D[i].length; j++){
+	   		if(block2D[i][j] > 0){
+		  		screen2D[i][j] = block2D[i][j]
+	   		}
+		}
+	}
+}
+
+function moveStack2DToScreen2D(){
+	for(var i = 0; i < stack2D.length; i++){
+		for(var j = 0; j < stack2D[i].length; j++){
+   			if(stack2D[i][j] > 0){
+	  			screen2D[i][j] = stack2D[i][j]
+   			}
+		}
+	}
+}
+
+function myrender(){
+	var tds = document.getElementsByClassName("mt");
+	tds[11].bgColor = "#ff0000"
+	for(var i = 0; i < screen2D.length; i++){
+		for(var j = 0; j < screen2D[i].length; j++){
+		   if(screen2D[i][j] == 0){
+			  tds[i * 10 + j].bgColor = "#ffffff";
+		   } else if(screen2D[i][j] == 1){
+			  tds[i * 10 + j].bgColor = "#FF0000";
+		   } else if(screen2D[i][j] == 2){
+			  tds[i * 10 + j].bgColor = "#ffbb00";
+		   } else if(screen2D[i][j] == 3){
+			  tds[i * 10 + j].bgColor = "#FFE400";
+		   } else if(screen2D[i][j] == 4){
+			  tds[i * 10 + j].bgColor = "#1DDB16";
+		   } else if(screen2D[i][j] == 5){
+			  tds[i * 10 + j].bgColor = "#00D8FF";
+		   } else if(screen2D[i][j] == 6){
+			  tds[i * 10 + j].bgColor = "#0100FF";
+		   } else if(screen2D[i][j] == 7){
+			  tds[i * 10 + j].bgColor = "#5F00FF";
+		   } else if(screen2D[i][j] == 11){
+			  tds[i * 10 + j].bgColor = "#2F9D27";
+		   } else if(screen2D[i][j] == 12){
+			  tds[i * 10 + j].bgColor = "#2F9D27";
+		   } else if(screen2D[i][j] == 13){
+			  tds[i * 10 + j].bgColor = "#2F9D27";
+		   } else if(screen2D[i][j] == 14){
+			  tds[i * 10 + j].bgColor = "#2F9D27";
+		   } else if(screen2D[i][j] == 15){
+			  tds[i * 10 + j].bgColor = "#2F9D27";
+		   } else if(screen2D[i][j] == 16){
+			  tds[i * 10 + j].bgColor = "#2F9D27";
+		   } else if(screen2D[i][j] == 17){
+			  tds[i * 10 + j].bgColor = "#2F9D27";
+		   } 
+		}
+	}
+}
+
+function makeScreen2DZero(){
+	for(var i = 0; i < screen2D.length; i++){
+		for(var j = 0; j < screen2D[i].length; j++){
+		   if(screen2D[i][j] > 0){
+			  screen2D[i][j] = 0
+	   		}
+		}
+	}
+}
+
+function changeStatus(){
+	if(b.type > 1 && b.type < 5){
+		if(b.status == 1){
+		   b.status += 1;
+		} else if(b.status == 2){
+	   	b.status = 1;
+		}
+	}
+	
+	if(b.type > 4){
+		if(b.status > 0){
+			b.status++;
+		} 
+
+		if(b.status > 4){
+		   	b.status = 1;
+		}
+	}
+}
+
+
+function isCollision(){
+ var cnt = 0;
+ for(var i = 0; i < 25; i++){
+	for(var j = 0; j < 10; j++){
+	   if(block2D[i][j] > 0){
+		  cnt++;
+	   }
+	}
+ }
+ console.log(cnt);
+ if(cnt < 4) return true;
+ 
+ for(var i = 0; i < block2D.length; i++){
+	for(var j = 0; j < block2D[i].length; j++){
+	   if(block2D[i][j] && stack2D[i][j] > 0){
+		  return true;
+	   }
+	}
+ }
+ return false;
+}
+
+function stackBlock(){
+ for(var i = 0; i < block2D.length; i++){
+	for(var j = 0; j < block2D[i].length; j++){
+	   if(block2D[i][j] > 0){
+		  stack2D[i][j] += block2D[i][j] + 10
+	   }
+	}
+ }
+}
+function getCount10(){
+	var cnt = 0;
+	for(var i = 0; i < stack2D.length; i++){
+		if(stack2D[i][0] > 0 && stack2D[i][1] > 0 && stack2D[i][2] > 0 && stack2D[i][3] > 0 && stack2D[i][4] > 0 &&
+	  	stack2D[i][5] > 0 && stack2D[i][6] > 0 && stack2D[i][7] > 0 && stack2D[i][8] > 0 && stack2D[i][9] > 0){
+   			cnt++;
+		}
+	}
+	return cnt;
+}
+
+function remove10Stack(){
+	for(var i = 0; i < stack2D.length; i++){
+	var cnt = 0;
+		for(var j = 0; j < stack2D[i].length; j++){
+		   if(stack2D[i][j] != 0){
+			  cnt++;
+		   }
+		}
+		if(cnt ==10){
+	 	  stack2D.splice(i,1);
+	 	  document.getElementById('mydisplay').innerHTML -= 1;
+	 	  stack2D.unshift([0,0,0,0,0, 0,0,0,0,0]);
+	 	  if(document.getElementById('mydisplay').innerHTML <= 0) {
+		  	alert("이겼답니다.")
+		  	startIng = false;
+	 	  }
+		}
+	}
+}
+function isfull(){
+	for(var i = 0; i < 10; i++){
+		if(stack2D[6][i] > 0){
+		   return true;
+		}
+	}
+	return false;
+}
+
+function mydown(key){
+	var back_type = b.type;
+	var back_status = b.status;
+	var back_i = b.i;
+	var back_j = b.j;
+	
+	var flag_down = false;
+	
+	if(key == 'ArrowDown'){
+		b.i++;
+		flag_down = true;
+	} else if(key == 'ArrowRight'){
+		b.j++
+	} else if(key == 'ArrowLeft'){
+		b.j--
+	} else if(key == 'ArrowUp'){
+		changeStatus();
+	}
+	
+	try {
+		setBlock2DFromClass();
+	} catch(error){
+		// console.error(error);
+	}
+ 
+	var flag_collision = isCollision();
+	if(flag_collision){
+		b.type = back_type;
+		b.status = back_status;
+		b.i = back_i;
+		b.j = back_j;
+		setBlock2DFromClass();
+		if(flag_down){
+		   stackBlock();
+	   
+		   var cnt10 = getCount10();
+		   console.log("cnt10 : " + cnt10);
+		   remove10Stack();
+	
+		   b.type = parseInt(Math.random()*7 + 1);
+		   b.status = 1;
+		   b.i = 2;
+		   b.j = 2;
+	   
+	   setBlock2DFromClass();
+	}
+		
+	console.log(stack2D);
+	return;
+	}
+
+ 
+	makeScreen2DZero();
+	moveBlock2DToScreen2D();
+	moveStack2DToScreen2D();
+	
+	myrender();
+	
+	fn_screen();
+	
+	var flag_full = isfull();
+	if(flag_full == true){
+	alert("졌답니다.")
+	startIng = false;
+	}
+}
+
+function fn_screen(){
+	var mymsg = $("#myname").val();
+	
+	socket.emit('to_server', {
+		name : myname,
+		command : 'myscreen',
+		msg : screen2D+""
+	});
+}
+
+function fn_start(){
+	var myname = $("#myname").val();
+
+	socket.emit('to_server', {
+		name : myname,
+		command : 'start',
+		msg : ''
+	});
+}
+
+
+
+window.addEventListener("keydown", (e) => {
+	if(startIng == false){
+		return;
+	}
+
+	mydown(e.key);
+	var flower = document.getElementById('mydiv');
+});
+
+
+</script>
+<style>
+.maintable {
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.maintable {
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.maintable td {
+	width: 20px;
+	height: 20px;
+}
+</style>
+</head>
+<body>
+	<table border="1px;">
+		<tr>
+			<td>
+				<table class = "maintable" border="1px">
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+					<tr>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+						<td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td><td class="mt"></td>
+					</tr>
+				</table>
+				점수 :
+				<div id="mydisplay">10</div>
+				<br>
+				<a href="javascript:fn_start()">start</a><br/>
+				connect:<div id="div_con"></div><br>
+				name:<input id="myname" type="text" ><br>
+				<div id="div_chat"></div>	
+			</td>
+			<td>
+			
+			</td>
+		</tr>
+	</table>
+
+
+
+	

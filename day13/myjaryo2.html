@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+init();
+function init(){
+	var stack2D = [
+	      [0,0,0,1,0, 0,0,0,0,0],
+	      [0,0,0,1,0, 0,0,0,0,0],
+	      [0,0,0,1,0, 0,0,0,0,0],
+	      [0,0,0,1,0, 0,0,0,0,0],
+	      [0,0,0,1,0, 0,0,0,0,0],
+	             
+	      [0,0,0,1,0, 0,0,0,0,0],
+	      [0,0,0,1,0, 0,0,0,0,0],
+	      [0,0,0,1,0, 0,0,0,0,0],
+	      [0,0,0,1,0, 0,0,0,0,0],
+	      [0,0,0,1,0, 0,0,0,0,0],
+	             
+	      [0,0,0,1,0, 0,0,0,0,0],
+	      [0,0,0,1,0, 0,0,0,0,0],
+	      [0,0,1,1,1, 0,0,0,0,0],
+	      [1,1,1,1,1, 1,1,1,1,1],
+	      [1,1,1,1,1, 1,1,1,1,1]
+	   ]
+	
+	var arr = [0,0,0,0,0, 0,0,0,0,0];
+	for(var i = 0; i < stack2D.length; i++){
+		var cnt = 0;
+		for(var j = 0; j < stack2D[i].length; j++){
+			if(stack2D[i][j] > 0){
+				cnt++;
+			}		
+		}
+		if(cnt == 10){
+			stack2D.splice(i,1);
+			stack2D.unshift(arr);
+		}
+	}
+	console.log(stack2D);
+}	
+</script>
+</head>
+<body>
+	
+</body>
+</html>
