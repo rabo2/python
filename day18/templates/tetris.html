@@ -6,7 +6,6 @@
 <script src="js/jquery-3.5.1.js"></script>
 <script src="js/socket.io.js"></script>
 <script type="text/javascript">
-var users = [];
 var socket = null;
 $(document).ready(function() {
 	socket = io.connect('http://192.168.45.45:9999');
@@ -14,55 +13,10 @@ $(document).ready(function() {
 		$("#div_con").html("on");
 	})
 	socket.on('to_client', function(json) {
-		var name = json.name;
 		var command = json.command;
-		var msg = json.msg;
 		
-		if(command=="start"){
+		if(command){
 			startIng = true;
-		}
-		
-		
-		if(command=="ready"){
-			var idx = -1;
-			for(var i = 0; i < users.length; i++){
-				if(users[i] == name){
-					idx = i;
-					break;
-				}
-			}
-			
-			if(idx == -1){
-				users.push(name);
-				var divs= document.getElementsByClassName('div_users');
-				console.log(divs);
-				for(var i = 0; i < users.length; i++){
-					divs[i].innerHTML=users[i];
-				}
-			}
-		}
-		
-		if(command == "myscreen"){
-			var msg = json.msg;
-			var name = json.name;
-			
-			var idx = -1;
-			for(var i = 0; i < users.length; i++){
-				if(users[i] == name){
-					idx = i;
-					break;
-				}
-			}
-			
-			console.log(idx);
-			var canvas= document.getElementsByClassName('can_users');
-			
-			draw(msg, canvas[idx]);
-		}
-		
-		if(command == "win"){
-			alert(name + "님께 의해서 코로나 바이러스 역병을 극복")
-			startIng = false;
 		}
 	})
 });
@@ -178,7 +132,7 @@ class Block {
 	}
 }
 
-var b = new Block(Math.random()*7+1,1,2,4);
+var b = new Block(1,1,2,4);
 
 
 function setBlock2DFromClass(){
@@ -474,6 +428,7 @@ function remove10Stack(){
 	 	  stack2D.unshift([0,0,0,0,0, 0,0,0,0,0]);
 	 	  if(document.getElementById('mydisplay').innerHTML <= 0) {
 		  	alert("이겼답니다.")
+		  	startIng = false;
 	 	  }
 		}
 	}
@@ -555,7 +510,7 @@ function mydown(key){
 }
 
 function fn_screen(){
-	var myname = $("#myname").val();
+	var mymsg = $("#myname").val();
 	
 	socket.emit('to_server', {
 		name : myname,
@@ -574,100 +529,6 @@ function fn_start(){
 	});
 }
 
-function fn_ready(){
-	var myname = $("#myname").val();
-	
-	if(myname.length != 3){
-		alert('정확한 이름을 기입하세요');
-		$("#myname").focus();
-		return;
-	}
-	socket.emit('to_server', {
-		name : myname,
-		command : 'ready',
-		msg : ''
-	});
-}
-
-function fn_win(){
-	var myname = $("#myname").val();
-	
-	if(myname.length != 3){
-		alert('정확한 이름을 기입하세요');
-		$("#myname").focus();
-		return;
-	}
-	socket.emit('to_server', {
-		name : myname,
-		command : 'ready',
-		msg : ''
-	});
-}
-
-
-function draw(msg, canvas){
-	var data = msg;
-	console.log(data);
-	var arr = data.split(",");
-	
-	if (canvas.getContext) {
-		var ctx = canvas.getContext("2d");
-		
-		for (var i=0; i < 25; i++){
-			for(var j=0; j < 10; j++){
-				if ( arr[i*10 + j] == 0){
-					ctx.fillStyle = "rgb(200, 200, 200)";
-				}
-				if ( arr[i*10 + j] == 1){
-					ctx.fillStyle = "#dd0000";
-				}
-				if ( arr[i*10 + j] == 2){
-					ctx.fillStyle = "#bb0000";
-				}
-				if ( arr[i*10 + j] == 3){
-					ctx.fillStyle = "#990000";
-				}
-				if ( arr[i*10 + j] == 4){
-					ctx.fillStyle = "#770000";
-				}
-				if ( arr[i*10 + j] == 5){
-					ctx.fillStyle = "#550000";
-				}
-				if ( arr[i*10 + j] == 6){
-					ctx.fillStyle = "#550000";
-				}
-				if ( arr[i*10 + j] == 7){
-					ctx.fillStyle = "#330000";
-				}
-		
-		
-				if ( arr[i*10 + j] == 11){
-					ctx.fillStyle = "#00ff00";
-				}
-				if ( arr[i*10 + j] == 12){
-					ctx.fillStyle = "#00dd00";
-				}
-				if ( arr[i*10 + j] == 13){
-					ctx.fillStyle = "#00bb00";
-				}
-				if ( arr[i*10 + j] == 14){
-					ctx.fillStyle = "#009900";
-				}
-				if ( arr[i*10 + j] == 15){
-					ctx.fillStyle = "#007700";
-				}
-				if ( arr[i*10 + j] == 16){
-					ctx.fillStyle = "#005500";
-				}
-				if ( arr[i*10 + j] == 17){
-					ctx.fillStyle = "#003300";
-				}
-				ctx.fillRect (j*15, i*6, 14, 5);
-		
-			}
-		}
-	}
-}
 
 
 window.addEventListener("keydown", (e) => {
@@ -696,15 +557,6 @@ window.addEventListener("keydown", (e) => {
 
 .maintable td {
 	width: 20px;
-	height: 20px;
-}
-
-.can_users{
-	width: 100px;	
-	height: 150px;	
-}
-
-.div_users{
 	height: 20px;
 }
 </style>
@@ -818,79 +670,13 @@ window.addEventListener("keydown", (e) => {
 				점수 :
 				<div id="mydisplay">10</div>
 				<br>
-				connect:<div id="div_con"></div><br>
-				<div id="div_chat"></div>	
-				name:<input id="myname" type="text" ><br>
-				<a href="javascript:fn_ready()">ready</a><br/>
 				<a href="javascript:fn_start()">start</a><br/>
+				connect:<div id="div_con"></div><br>
+				name:<input id="myname" type="text" ><br>
+				<div id="div_chat"></div>	
 			</td>
 			<td>
-				<table border="1px;">
-					<tr>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-					</tr>			
-					<tr>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-					</tr>			
-					<tr>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-					</tr>			
-					<tr>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-					</tr>			
-					<tr>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-					</tr>			
-					<tr>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-					</tr>			
-					<tr>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-						<td><div class="div_users"></div></td>
-					</tr>			
-					<tr>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-						<td><canvas class="can_users"></canvas></td>
-					</tr>			
-				</table>
+			
 			</td>
 		</tr>
 	</table>
